@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 
 namespace BankSystem
 {
-    class Client
+    public class Client
     {
+        public static event Action<Client> CreateClient;
+
         public Client(string Name)
         {
             this.Name = Name;
             this.bankAccounts = new List<BankAccount>();
-            DataBase.AddClient(this);
+
+            CreateClient?.Invoke(this);
         }
 
-        public Client() : this("Имя")
+        private Client() : this("Имя")
         {
             bankAccounts = new List<BankAccount>();
         }

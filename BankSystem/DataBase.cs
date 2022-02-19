@@ -6,23 +6,25 @@ using System.Threading.Tasks;
 
 namespace BankSystem
 {
-    static class DataBase
+    public class DataBase : IDataBase
     {
-        static public List<BankAccount> BankAccountsCount { get; set; }
-        static public List<Client> ClientsCount { get; set; }
+        public List<BankAccount> BankAccountsCount { get; set; }
+        public List<Client> ClientsCount { get; set; }
 
-        static DataBase()
+        public DataBase()
         {
             BankAccountsCount = new List<BankAccount>();
             ClientsCount = new List<Client>();
+            BankAccount.CreateBankAccount += AddBankAccount;
+            Client.CreateClient += AddClient;
         }
 
-        static public void AddClient(Client client)
+        public void AddClient(Client client)
         {
             ClientsCount.Add(client);
         }
 
-        static public void AddBankAccount(BankAccount bankAccount)
+        public void AddBankAccount(BankAccount bankAccount)
         {
             BankAccountsCount.Add(bankAccount);
         }

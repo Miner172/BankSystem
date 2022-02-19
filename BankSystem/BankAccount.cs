@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace BankSystem
 {
-    class BankAccount
+    public class BankAccount
     {
+        static public event Action<BankAccount> CreateBankAccount;
+        static public event Action<BankAccount> OpenBankAccountEvent;
+        static public event Action<BankAccount> CloseBankAccountEvent;
+        static public event Action<BankAccount, BankAccount, float> TranslationMoneyEvent;
         static Random random;
 
         static BankAccount()
@@ -15,53 +20,39 @@ namespace BankSystem
             random = new Random();
         }
 
-        public BankAccount(Client Owner, int Money, bool IsDepsite)
+        public BankAccount(Client Owner, float Money, bool IsDepsite, string Code)
         {
             this.Owner = Owner;
             this.Money = Money;
             this.IsOpen = true;
             this.IsDeposite = IsDepsite;
-
-            GenerateNumber();
-
-            foreach (var BankAccount in DataBase.BankAccountsCount)
-            {
-                if (BankAccount.Code == this.Code)
-                    GenerateNumber();
-            }
+            this.Code = Code;
 
             this.Owner.bankAccounts.Add(this);
-            DataBase.AddBankAccount(this);
-        }
-
-        private void GenerateNumber()
-        {
-            int s1 = random.Next(100, 999);
-            int s2 = random.Next(100, 999);
-            int s3 = random.Next(100, 999);
-            this.Code = $"{s1}{s2}{s3}";
+            CreateBankAccount?.Invoke(this);
         }
 
         public void EndOfTheMonth(int Percent)
         {
-            if (IsDeposite)
+            if (IsDeposite && IsOpen)
                 this.Money = this.Money * (100 + Percent) / 100;
         }
 
-        public string TranslationMoney(BankAccount Recipient, int Money)
+        public string TranslationMoney(BankAccount Recipient, float Money)
         {
             if (Recipient != this)
             {
                 if (Recipient.IsOpen)
                 {
-                    if (Money < this.Money)
+                    if (Money < this.Money && Money >= 0)
                     {
                         Recipient.Money += Money;
                         this.Money -= Money;
+                        TranslationMoneyEvent?.Invoke(this, Recipient, Money);
                         return "Все прошло успешно";
                     }
                     else
-                        return "Недостаточно средств";
+                        return "Недостаточно средств или нельзя переводить в минус";
                 }
                 else
                     return "Нельзя перевести деньги на закрытый счет";
@@ -73,14 +64,20 @@ namespace BankSystem
         public void CloseOpenBankAccount()
         {
             if (this.IsOpen)
+            {
                 this.IsOpen = false;
+                CloseBankAccountEvent?.Invoke(this);
+            }
             else
+            {
                 this.IsOpen = true;
+                OpenBankAccountEvent?.Invoke(this);
+            }
         }
 
         public string Code { get; private set; }
         public Client Owner { get; private set; }
-        public int Money { get ; set; }
+        public float Money { get ; set; }
         public bool IsDeposite { get; set; }
         public bool IsOpen { get; set; }
     }

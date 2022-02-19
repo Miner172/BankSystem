@@ -88,5 +88,35 @@
                 Width="80"
                 Height="80"
                 Click="SkipMonthBtn_Click"/>
+        <Button x:Name="CheckLogsBtn" 
+                Style="{StaticResource MaterialDesignFloatingActionDarkButton}" 
+                Grid.ColumnSpan="2"
+                Width="80"
+                Height="80" 
+                Click="CheckLogsBtn_Click" 
+                Grid.RowSpan="2">
+            <materialDesign:PackIcon Kind="Computer" Height="45" Width="45" />
+        </Button>
+        <GroupBox x:Name="LogsPanel" Background="#7F000000" Grid.ColumnSpan="2" Grid.RowSpan="7" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80*"/>
+                    <RowDefinition Height="353*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="447*"/>
+                    <ColumnDefinition Width="40*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox x:Name="LogsListBox" Grid.ColumnSpan="2" Grid.RowSpan="2" Background="White"/>
+                <Button x:Name="CloseLogsBtn"
+                    Style="{StaticResource MaterialDesignFloatingActionDarkButton}"
+                    Width="Auto"
+                    Height="Auto"
+                    Grid.Column="2"
+                    Click="CloseLogsBtn_Click">
+                    <materialDesign:PackIcon Kind="Close" Height="45" Width="45" />
+                </Button>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

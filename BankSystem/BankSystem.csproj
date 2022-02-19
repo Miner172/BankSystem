@@ -74,6 +74,7 @@
     <Compile Include="BankAccount.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="DataBase.cs" />
+    <Compile Include="IDataBase.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
