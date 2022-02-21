@@ -7,19 +7,47 @@ using System.Threading.Tasks;
 
 namespace BankSystem
 {
+    /// <summary>
+    /// информация о счете
+    /// </summary>
     public class BankAccount
     {
+        /// <summary>
+        /// эвент вызываеться когда создаеться счет
+        /// </summary>
         static public event Action<BankAccount> CreateBankAccount;
+        /// <summary>
+        /// эвент вызываеться когда счет открываеться
+        /// </summary>
         static public event Action<BankAccount> OpenBankAccountEvent;
+        /// <summary>
+        /// эвент вызываеться когда счет закрываеться
+        /// </summary>
         static public event Action<BankAccount> CloseBankAccountEvent;
+        /// <summary>
+        /// эвент вызываеться когда происходит перевод средств
+        /// </summary>
         static public event Action<BankAccount, BankAccount, float> TranslationMoneyEvent;
+        /// <summary>
+        /// статическое свойство random
+        /// </summary>
         static Random random;
 
+        /// <summary>
+        /// статический конструктор инициализирует статическое свойство random
+        /// </summary>
         static BankAccount()
         {
             random = new Random();
         }
 
+        /// <summary>
+        /// конструктор вызывает эвент создание счета и присваивает свойствам значения
+        /// </summary>
+        /// <param name="Owner"></param>
+        /// <param name="Money"></param>
+        /// <param name="IsDepsite"></param>
+        /// <param name="Code"></param>
         public BankAccount(Client Owner, float Money, bool IsDepsite, string Code)
         {
             this.Owner = Owner;
@@ -32,12 +60,22 @@ namespace BankSystem
             CreateBankAccount?.Invoke(this);
         }
 
+        /// <summary>
+        /// метод вызываеться в конце месяца и на депозитные счета ложаться деньги
+        /// </summary>
+        /// <param name="Percent"></param>
         public void EndOfTheMonth(int Percent)
         {
             if (IsDeposite && IsOpen)
                 this.Money = this.Money * (100 + Percent) / 100;
         }
 
+        /// <summary>
+        /// метод вызыветься при переводе средств а тажке вызывет эвент перевода средств
+        /// </summary>
+        /// <param name="Recipient"></param>
+        /// <param name="Money"></param>
+        /// <returns></returns>
         public string TranslationMoney(BankAccount Recipient, float Money)
         {
             if (Recipient != this)
@@ -61,6 +99,9 @@ namespace BankSystem
                 return "Нельзя перевести деньги самому себе";
         }   
 
+        /// <summary>
+        /// открывает или закрывает счет и вызвает эвенты открытия или закрытия счета
+        /// </summary>
         public void CloseOpenBankAccount()
         {
             if (this.IsOpen)
@@ -75,10 +116,25 @@ namespace BankSystem
             }
         }
 
+        /// <summary>
+        /// свойство хранит код счета
+        /// </summary>
         public string Code { get; private set; }
+        /// <summary>
+        /// свойство хранит владельца счета
+        /// </summary>
         public Client Owner { get; private set; }
+        /// <summary>
+        /// свойство хранит деньги счета
+        /// </summary>
         public float Money { get ; set; }
+        /// <summary>
+        /// свойство хранит информацию депозитный ли счет
+        /// </summary>
         public bool IsDeposite { get; set; }
+        /// <summary>
+        /// свойство хранит информацию открытый ли счет
+        /// </summary>
         public bool IsOpen { get; set; }
     }
 }

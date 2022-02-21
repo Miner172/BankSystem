@@ -20,10 +20,23 @@ namespace BankSystem
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// свойство random
+        /// </summary>
         private Random random;
+        /// <summary>
+        /// свойство содержит логи
+        /// </summary>
         private List<string> logs;
+        /// <summary>
+        /// свойство содержит данные о клиентах и счетах
+        /// </summary>
         private IDataBase dataBase;
 
+        /// <summary>
+        /// конструктор задает свойствам значения и подписываеться на разные эвенты
+        /// </summary>
+        /// <param name="dataBase"></param>
         public MainWindow(IDataBase dataBase)
         {
             this.dataBase = dataBase;
@@ -54,6 +67,10 @@ namespace BankSystem
             BankAccount.CloseBankAccountEvent += CloseOrOpenBankAccountToLogs;
         }
 
+        /// <summary>
+        /// метод вызываеться при открытии или закрытии счета и выводит это в логи
+        /// </summary>
+        /// <param name="bankAccount"></param>
         private void CloseOrOpenBankAccountToLogs(BankAccount bankAccount)
         {
             if(bankAccount.IsOpen)
@@ -63,18 +80,34 @@ namespace BankSystem
             LogsListBox.Items.Refresh();
         }
 
+        /// <summary>
+        /// вызываеться когда происходит перевод между счетами и записывает это в логи
+        /// </summary>
+        /// <param name="bankAccount"></param>
+        /// <param name="recipient"></param>
+        /// <param name="money"></param>
         private void TranslationMoneyToLogs(BankAccount bankAccount, BankAccount recipient, float money)
         {
             logs.Add($"{bankAccount.Owner.Name} перевел деньги с счета с кодом: {bankAccount.Code} на счет {recipient.Owner.Name} с кодом: {recipient.Code} {money} рублей");
             LogsListBox.Items.Refresh();
         }
 
+        /// <summary>
+        /// метод вызываеться когда меняеться выбранный элемент в ClientsComboBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClientsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = ClientsComboBox.SelectedIndex;
             BankAccountsListView.ItemsSource = dataBase.ClientsCount[index].bankAccounts;
         }
 
+        /// <summary>
+        /// метод вызываеться когда меняеться выбранный элемент в BankAccountsListView
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BankAccountsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (BankAccountsListView.SelectedItems.Count != 0)
@@ -83,6 +116,11 @@ namespace BankSystem
                 CloseBankAccountBtn.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// вызываеться при нажатии на кнопку TranslationMoneyBankAccountBtn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TranslationMoneyBankAccountBtn_Click(object sender, RoutedEventArgs e)
         {
             if (MoneyCountTextBox.Text != string.Empty && FromWhomComboBox.SelectedIndex != -1 && WhomComboBox.SelectedIndex != -1)
@@ -97,6 +135,11 @@ namespace BankSystem
             }
         }
 
+        /// <summary>
+        /// вызываеться при нажатии на кнопку CloseBankAccountBtn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CloseBankAccountBtn_Click(object sender, RoutedEventArgs e)
         {
             BankAccount bankAccount = (BankAccount)BankAccountsListView.SelectedItem;
@@ -106,6 +149,11 @@ namespace BankSystem
             BankAccountsListView.Items.Refresh();
         }
 
+        /// <summary>
+        /// вызываеться при нажатии на кнопку SkipMonthBtn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SkipMonthBtn_Click(object sender, RoutedEventArgs e)
         {
             foreach (var bankAccount in dataBase.BankAccountsCount)
@@ -116,16 +164,30 @@ namespace BankSystem
             BankAccountsListView.Items.Refresh();
         }
 
+        /// <summary>
+        /// вызываеться при нажатии на кнопку CheckLogsBtn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CheckLogsBtn_Click(object sender, RoutedEventArgs e)
         {
             LogsPanel.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// вызываеться при нажатии на кнопку CloseLogsBtn
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CloseLogsBtn_Click(object sender, RoutedEventArgs e)
         {
             LogsPanel.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// вызываеться в конструкторе MainWindow для генерирования кода
+        /// </summary>
+        /// <returns></returns>
         private string GenerateNumber()
         {
             int s1 = random.Next(100, 999);
