@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BankSystem
+namespace BankLibrary
 {
     /// <summary>
     /// информация о счете
@@ -74,30 +73,47 @@ namespace BankSystem
         /// метод вызыветься при переводе средств а тажке вызывет эвент перевода средств
         /// </summary>
         /// <param name="Recipient"></param>
-        /// <param name="Money"></param>
+        /// <param name="MoneyString"></param>
         /// <returns></returns>
-        public string TranslationMoney(BankAccount Recipient, float Money)
+        public string TranslationMoney(BankAccount Recipient, string MoneyString)
         {
-            if (Recipient != this)
+            try
             {
-                if (Recipient.IsOpen)
+                float Money = Convert.ToSingle(MoneyString);
+                if (Recipient != this)
                 {
-                    if (Money < this.Money && Money >= 0)
+                    if (Recipient.IsOpen)
                     {
-                        Recipient.Money += Money;
-                        this.Money -= Money;
-                        TranslationMoneyEvent?.Invoke(this, Recipient, Money);
-                        return "Все прошло успешно";
+                        if (Money < this.Money && Money >= 0)
+                        {
+                            Recipient.Money += Money;
+                            this.Money -= Money;
+                            TranslationMoneyEvent?.Invoke(this, Recipient, Money);
+                            return "Все прошло успешно";
+                        }
+                        else
+                            return "Недостаточно средств или нельзя переводить в минус";
                     }
                     else
-                        return "Недостаточно средств или нельзя переводить в минус";
+                        return "Нельзя перевести деньги на закрытый счет";
                 }
                 else
-                    return "Нельзя перевести деньги на закрытый счет";
+                    return "Нельзя перевести деньги самому себе";
             }
-            else
-                return "Нельзя перевести деньги самому себе";
-        }   
+            catch (FormatException)
+            {
+                return "можно исползовать только цифры и запятные";
+            }
+            catch (OverflowException)
+            {
+                return "слишком большое или слишком маленкое число";
+            }
+            catch (Exception)
+            {
+                return "ошибка...";
+            }
+
+        }
 
         /// <summary>
         /// открывает или закрывает счет и вызвает эвенты открытия или закрытия счета
@@ -127,7 +143,7 @@ namespace BankSystem
         /// <summary>
         /// свойство хранит деньги счета
         /// </summary>
-        public float Money { get ; set; }
+        public float Money { get; set; }
         /// <summary>
         /// свойство хранит информацию депозитный ли счет
         /// </summary>

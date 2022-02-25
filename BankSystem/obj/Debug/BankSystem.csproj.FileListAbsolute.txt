@@ -20,3 +20,5 @@ D:\Program\C#\HomeWork\BankSystem\BankSystem\bin\Debug\MaterialDesignThemes.Wpf.
 D:\Program\C#\HomeWork\BankSystem\BankSystem\bin\Debug\MaterialDesignThemes.Wpf.xml
 D:\Program\C#\HomeWork\BankSystem\BankSystem\obj\Debug\App.baml
 D:\Program\C#\HomeWork\BankSystem\BankSystem\obj\Debug\BankSystem.csproj.CopyComplete
+D:\Program\C#\HomeWork\BankSystem\BankSystem\bin\Debug\BankLibrary.dll
+D:\Program\C#\HomeWork\BankSystem\BankSystem\bin\Debug\BankLibrary.pdb

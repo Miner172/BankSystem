@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BankLibrary;
 
 namespace BankSystem
 {
@@ -128,9 +129,8 @@ namespace BankSystem
                 BankAccount fromWhomBankAccount = (BankAccount)FromWhomComboBox.SelectedItem;
                 BankAccount whomBankAccount = (BankAccount)WhomComboBox.SelectedItem;
 
-                float money = Convert.ToSingle(MoneyCountTextBox.Text);
-
-                MessageBox.Show($"{fromWhomBankAccount.TranslationMoney(whomBankAccount, money)}");
+                MessageBox.Show($"{fromWhomBankAccount.TranslationMoney(whomBankAccount, MoneyCountTextBox.Text)}");
+                MoneyCountTextBox.Text = "";
                 BankAccountsListView.Items.Refresh();
             }
         }
