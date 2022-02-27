@@ -55,6 +55,9 @@ namespace BankLibrary
             this.IsDeposite = IsDepsite;
             this.Code = Code;
 
+            if (this.Owner.bankAccounts.Count + 1 >= 4)
+                throw new MaxBankAccountException("Слишком много счетов на одного клиента", this.Owner.Name);
+
             this.Owner.bankAccounts.Add(this);
             CreateBankAccount?.Invoke(this);
         }
@@ -112,7 +115,6 @@ namespace BankLibrary
             {
                 return "ошибка...";
             }
-
         }
 
         /// <summary>

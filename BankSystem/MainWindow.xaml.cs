@@ -34,6 +34,12 @@ namespace BankSystem
         /// </summary>
         private IDataBase dataBase;
 
+        private void SS()
+        {
+            string s = "errir";
+            if (s == "errir") throw new IndexOutOfRangeException();
+        }
+
         /// <summary>
         /// конструктор задает свойствам значения и подписываеться на разные эвенты
         /// </summary>
@@ -51,12 +57,19 @@ namespace BankSystem
             Client client = new Client("matis");
             Client client2 = new Client("matis2");
 
-            BankAccount bankAccount1 = new BankAccount(client, 2000, true, GenerateNumber());
-            BankAccount bankAccount2 = new BankAccount(client, 123, false, GenerateNumber());
-            BankAccount bankAccount3 = new BankAccount(client, 123, false, GenerateNumber());
-            BankAccount bankAccount4 = new BankAccount(client, 21300, false, GenerateNumber());
-            BankAccount bankAccount5 = new BankAccount(client, 12, true, GenerateNumber());
-            BankAccount bankAccount1312 = new BankAccount(client2, 100, true, GenerateNumber());
+            try
+            {
+                BankAccount bankAccount1 = new BankAccount(client, 2000, true, GenerateNumber());
+                BankAccount bankAccount2 = new BankAccount(client, 123, false, GenerateNumber());
+                BankAccount bankAccount3 = new BankAccount(client, 123, false, GenerateNumber());
+                //BankAccount bankAccount4 = new BankAccount(client, 21300, false, GenerateNumber());
+                BankAccount bankAccount11 = new BankAccount(client2, 12, true, GenerateNumber());
+                BankAccount bankAccount1312 = new BankAccount(client2, 100, true, GenerateNumber());
+            }
+            catch (MaxBankAccountException e)
+            {
+                MessageBox.Show($"{e.Message}: {e.Name}");
+            }
 
             ClientsComboBox.ItemsSource = dataBase.ClientsCount;
             FromWhomComboBox.ItemsSource = dataBase.BankAccountsCount;

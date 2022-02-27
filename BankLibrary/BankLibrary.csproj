@@ -45,6 +45,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="DataBase.cs" />
     <Compile Include="IDataBase.cs" />
+    <Compile Include="MaxBankAccountException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
