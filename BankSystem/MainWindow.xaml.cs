@@ -34,12 +34,6 @@ namespace BankSystem
         /// </summary>
         private IDataBase dataBase;
 
-        private void SS()
-        {
-            string s = "errir";
-            if (s == "errir") throw new IndexOutOfRangeException();
-        }
-
         /// <summary>
         /// конструктор задает свойствам значения и подписываеться на разные эвенты
         /// </summary>
